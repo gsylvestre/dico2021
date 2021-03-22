@@ -1,14 +1,47 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>test</title>
-</head>
-<body>
-<h1>test</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis cupiditate dolorum nemo pariatur, quam quibusdam ullam! Animi, blanditiis distinctio doloremque eos, laudantium molestias officia quaerat quas quasi quis ratione soluta.</p>
-</body>
-</html>
+{% extends 'base.html.twig' %}
+
+{% block title %}Page pour tester des trucs{% endblock %}
+
+{% block body %}
+
+    {# provient du contrôleur ! #}
+    {{ name }}
+
+    <!-- commentaire html -->
+    {#
+    commentaires
+    multilignes
+    invisibles !
+    #}
+
+    {% set username = "<h1>guili</h1>" %}
+
+    {# <?php echo htmlentities($username); ?> #}
+    {{ username|upper|trim }}
+
+    {% if username == "guili" %}
+        <h2>coucou guili</h2>
+    {% else %}
+        <h2>t'es qui toi ?</h2>
+    {% endif %}
+
+    {% set colors = ["brown", "blue", "beige"] %}
+
+    {% for c in colors %}
+        <div>{{ c|capitalize }}</div>
+    {% else %}
+        <div>Pas de couleurs ici !</div>
+    {% endfor %}
+
+    {% for i in 0..10 %}
+        <div>{{ i }}</div>
+    {% endfor %}
+
+    <div>
+    {{ "+ 1 month"|date("d/m/Y") }}
+    </div>
+
+    <div>{{ 15616516.1111|number_format(2, ",", " ") }}</div>
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis cupiditate dolorum nemo pariatur, quam quibusdam ullam! Animi, blanditiis distinctio doloremque eos, laudantium molestias officia quaerat quas quasi quis ratione soluta.</p>
+{% endblock %}
