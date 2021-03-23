@@ -3,26 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('img/favicon.png') }}">
 </head>
 <body>
     <header>
-        <img src="{{ asset('img/wikebec-white.png') }}">
+        <div class="container">
+            <div class="site-title">
+                <a href="{{ path('main_home') }}">
+                    <img class="logo" src="{{ asset('img/wikebec-white.png') }}" alt="Wikébec">
+                </a>
+            </div>
 
-        <h1><a href="{{ path('main_home') }}">Wikébec</a></h1>
-
-        <a href="{{ path('main_test') }}">Test</a>
-
-        <a href="https://google.com">Google</a>
+            <nav>
+                <a href="{{ path('main_test') }}">Test</a>
+                <a href="https://google.com">Google</a>
+            </nav>
+        </div>
     </header>
 
     <main>
-        {% block body %}{% endblock %}
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
     </main>
 
     <footer>
-
+        <div class="container">
+            &copy; Wikébec {{ "now"|date("Y") }}
+        </div>
     </footer>
 </body>
 </html>
