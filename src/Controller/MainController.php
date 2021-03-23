@@ -12,6 +12,9 @@ class MainController extends AbstractController
      */
     public function home()
     {
+        $yo = ["dasf" => 12323232, "dsaffd" => [543432, 4324, 123123]];
+
+        //dd($yo);
 
         return $this->render("main/home.html.twig");
     }
