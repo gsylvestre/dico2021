@@ -3,14 +3,59 @@
 namespace App\Controller;
 
 use App\Entity\Term;
+use App\Form\TermType;
 use App\Repository\TermRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class TermController extends AbstractController
 {
+    /**
+     * @Route("/contribuer/", name="term_new")
+     */
+    public function new(Request $request, EntityManagerInterface $entityManager)
+    {
+        //crée une instance de l'entité que le form sert à créer
+        $term = new Term();
+
+        //crée une instance de la classe de formulaire
+        //on associe cette entité à notre formulaire !
+        $termForm = $this->createForm(TermType::class, $term);
+
+        //prend les données du formulaire soumis, et les injecte dans mon $term
+        $termForm->handleRequest($request);
+
+        //si le formulaire est soumis...
+        if ($termForm->isSubmitted() && $termForm->isValid()){
+            //hydrate les propriétés qui sont encore null
+            $term->setDateCreated(new \DateTime());
+
+            //le composant String de symfony me permet de convertir en chaîne normalisée
+            $slugger = new AsciiSlugger();
+            $slug = $slugger->slug( $term->getTerm() )->lower();
+            $term->setSlug($slug);
+
+            //sauvegarde en bdd !
+            $entityManager->persist($term);
+            $entityManager->flush();
+
+            $this->addFlash("success", "Votre terme a bien été enregistré !");
+
+            //redirige vers une autre page, ou vers la page actuelle pour vider le form
+            return $this->redirectToRoute("term_new");
+        }
+
+        return $this->render("term/new.html.twig", [
+            //passe l'instance à twig pour affichage
+            "termForm" => $termForm->createView()
+        ]);
+    }
+
+
     /**
      * @Route("/tous-les-mots/", name="term_list")
      */

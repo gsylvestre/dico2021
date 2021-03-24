@@ -60,6 +60,37 @@ footer {
     padding: 10px 0;
 }
 
+/** formulaires **/
+form label {
+    display: block;
+    margin-top: 10px;
+}
+
+.invalid-feedback {
+    color: red;
+    display: block;
+}
+
+.form-error-icon {
+    display: none;
+}
+
+.is-invalid label {
+    color: red;
+}
+
+.alert {
+    margin: 10px 0;
+    padding: 20px;
+    background-color: green;
+    text-align: center;
+    color: white;
+}
+
+.alert-danger {
+    background-color: darkred;
+}
+
 @media screen and (min-width: 600px){
      header .container {
          flex-direction: row;

@@ -4,10 +4,13 @@ namespace App\Entity;
 
 use App\Repository\TermRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TermRepository::class)
  * @ORM\Table(indexes={@ORM\Index(name="slug_idx", columns={"slug"})})
+ * @UniqueEntity(fields={"term"}, message="Ce terme existe déjà !")
  */
 class Term
 {
@@ -24,6 +27,13 @@ class Term
     private $slug;
 
     /**
+     * @Assert\NotBlank(message="Veuillez renseigner un terme allons donc !")
+     * @Assert\Length(
+     *     min=3,
+     *     max=255,
+     *     minMessage="3 caractères minimum svp !",
+     *     maxMessage="255 caractères max svp !"
+     * )
      * @ORM\Column(type="string", length=255)
      */
     private $term;
