@@ -7,8 +7,7 @@
 
     {% for term in terms %}
         <article>
-            <div>{{ term.term }}</div>
-            <div>Ajouté le {{ term.dateCreated|date("d/m/Y à H:i") }}</div>
+            <div><a href="{{ path('term_detail', {'slug': term.slug}) }}">{{ term.term }}</a></div>
         </article>
     {% endfor %}
 

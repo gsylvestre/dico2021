@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{ term.term }}
+{% endblock %}
+
+{% block body %}
+    <h2>{{ term.term }}</h2>
+
+    <ol>
+        {% for definition in term.definitions %}
+            <li>{{ definition.content }}</li>
+        {% endfor %}
+    </ol>
+
+    <h3>Variations</h3>
+    <p>{{ term.variations }}</p>
+
+    <h3>Origine</h3>
+    <p>{{ term.origin }}</p>
+
+    <h3>Nota bene</h3>
+    <p>{{ term.notaBene }}</p>
+
+    <h3>Ajouté le</h3>
+    <p>{{ term.dateCreated|date("d-m-Y") }}</p>
+{% endblock %}
+

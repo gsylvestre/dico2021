@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Term;
 use App\Form\TermType;
 use App\Repository\TermRepository;
+use App\Repository\UsageEvolutionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,11 +58,23 @@ class TermController extends AbstractController
 
 
     /**
+     * @Route("/dictionnaire/{slug}", name="term_detail")
+     */
+    public function detail(TermRepository $termRepository, string $slug): Response
+    {
+        $term = $termRepository->findOneBy(["slug" => $slug]);
+
+        return $this->render('term/detail.html.twig', [
+            "term" => $term
+        ]);
+    }
+
+    /**
      * @Route("/tous-les-mots/", name="term_list")
      */
     public function list(TermRepository $termRepository): Response
     {
-        $terms = $termRepository->findAll();
+        $terms = $termRepository->findBy(["is_published" => true], ["term" => "ASC"], 200);
 
         return $this->render('term/list.html.twig', [
             "terms" => $terms
@@ -71,7 +84,7 @@ class TermController extends AbstractController
     /**
      * @Route("/term/create/demo", name="term_create_demo")
      */
-    public function createDemo(EntityManagerInterface $entityManager)
+    public function createDemo(EntityManagerInterface $entityManager, UsageEvolutionRepository $usageEvolutionRepository)
     {
         //instanciation d'un nouveau terme du dictionnaire
         $term = new Term();
@@ -83,6 +96,10 @@ class TermController extends AbstractController
         $term->setOrigin('dlafjdkl 2 2  2 ');
         $term->setIsPublished(true);
         $term->setDateCreated(new \DateTime());
+
+        //pour sauvegarder la relation
+        $usageEvolution = $usageEvolutionRepository->findOneBy(["name" => "stable"]);
+        $term->setUsageEvolution($usageEvolution);
 
         //on sauvegarde cette instance svp !
         $entityManager->persist($term);

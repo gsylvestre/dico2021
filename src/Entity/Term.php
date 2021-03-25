@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TermRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -77,6 +79,21 @@ class Term
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $date_updated;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=UsageEvolution::class, inversedBy="terms")
+     */
+    private $usage_evolution;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Definition::class, mappedBy="term", cascade={"remove"})
+     */
+    private $definitions;
+
+    public function __construct()
+    {
+        $this->definitions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -199,6 +216,48 @@ class Term
     public function setDateUpdated(?\DateTimeInterface $date_updated): self
     {
         $this->date_updated = $date_updated;
+
+        return $this;
+    }
+
+    public function getUsageEvolution(): ?UsageEvolution
+    {
+        return $this->usage_evolution;
+    }
+
+    public function setUsageEvolution(?UsageEvolution $usage_evolution): self
+    {
+        $this->usage_evolution = $usage_evolution;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Definition[]
+     */
+    public function getDefinitions(): Collection
+    {
+        return $this->definitions;
+    }
+
+    public function addDefinition(Definition $definition): self
+    {
+        if (!$this->definitions->contains($definition)) {
+            $this->definitions[] = $definition;
+            $definition->setTerm($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDefinition(Definition $definition): self
+    {
+        if ($this->definitions->removeElement($definition)) {
+            // set the owning side to null (unless already changed)
+            if ($definition->getTerm() === $this) {
+                $definition->setTerm(null);
+            }
+        }
 
         return $this;
     }
