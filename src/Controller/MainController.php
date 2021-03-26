@@ -16,6 +16,8 @@ class MainController extends AbstractController
 
         //dd($yo);
 
+        dump($this->getUser());
+
         return $this->render("main/home.html.twig");
     }
 

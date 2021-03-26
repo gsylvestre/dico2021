@@ -7,6 +7,7 @@ use App\Form\TermType;
 use App\Repository\TermRepository;
 use App\Repository\UsageEvolutionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,7 @@ class TermController extends AbstractController
      */
     public function new(Request $request, EntityManagerInterface $entityManager)
     {
+
         //crée une instance de l'entité que le form sert à créer
         $term = new Term();
 
